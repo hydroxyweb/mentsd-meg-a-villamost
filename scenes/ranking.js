@@ -2,7 +2,7 @@ class Ranking extends Phaser.Scene {
     constructor() {
         super('ranking');
         this.container = '';
-        this.gameOver = localStorage.getItem('gameOver');
+        this.gameOver = sessionStorage.getItem('gameOver');
     }
 
     preload() {

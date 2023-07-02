@@ -1,10 +1,10 @@
 class MainMenu extends Phaser.Scene {
     constructor() {
         super('mainMenu');
-        if (localStorage.getItem('firsTimePlayer') === null) {
-            localStorage.setItem('firsTimePlayer', '1');
+        if (sessionStorage.getItem('firsTimePlayer') === null) {
+            sessionStorage.setItem('firsTimePlayer', '1');
         }
-        this.isFirstTimePlayer = Number(localStorage.getItem('firsTimePlayer'));
+        this.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
     }
 
     create() {

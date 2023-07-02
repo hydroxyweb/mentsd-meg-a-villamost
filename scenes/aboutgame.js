@@ -1,7 +1,7 @@
 class AboutGame extends Phaser.Scene {
     constructor() {
         super('aboutGame');
-        this.isFirstTimePlayer = Number(localStorage.getItem('firsTimePlayer'));
+        this.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
     }
 
     create() {
@@ -18,7 +18,7 @@ class AboutGame extends Phaser.Scene {
             .on('pointerdown', function() {
                 if (self.isFirstTimePlayer) {
                     self.playGame();
-                    localStorage.setItem('firsTimePlayer', '0');
+                    sessionStorage.setItem('firsTimePlayer', '0');
                 } else {
                     self.goToMainMenu()
                 }
