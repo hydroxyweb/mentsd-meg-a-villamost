@@ -121,10 +121,11 @@ class GameOver extends Phaser.Scene {
         xhttp.send("name="+ this.playerNameInput.value +"&score=" + this.finalScore+"&save=true");
 
         const self = this;
-        xhttp.onreadystatechange = function() {//Call a function when the state changes.
+        xhttp.onreadystatechange = function() {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
                 self.isSaveInProgress = false;
                 self.scene.start('ranking');
+                sessionStorage.setItem('gameOver', '{}');
             }
         }
     }

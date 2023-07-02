@@ -1,11 +1,12 @@
 class AboutGame extends Phaser.Scene {
     constructor() {
         super('aboutGame');
-        this.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
     }
 
     create() {
         const self = this;
+        self.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
+
         this.add.image(250 , 400, 'grass');
         const background = this.add.image(250 , 400, 'about_background');
         background.displayWidth = 500;

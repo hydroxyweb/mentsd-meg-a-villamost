@@ -1,12 +1,11 @@
 class Ranking extends Phaser.Scene {
     constructor() {
         super('ranking');
-        this.container = '';
-        this.gameOver = sessionStorage.getItem('gameOver');
     }
 
     preload() {
         this.load.html('topList', 'assets/form/toplist.php');
+        this.gameOver = sessionStorage.getItem('gameOver');
     }
 
     create() {
@@ -17,14 +16,13 @@ class Ranking extends Phaser.Scene {
         this.add.sprite(480 , 40, 'end')
             .setInteractive({ useHandCursor: true  })
             .on('pointerdown', () => {
-                const sceneName = this.gameOver !== '{}' ? 'gameOver' : 'mainMenu'
+                const sceneName = this.gameOver !== '{}' && this.gameOver !== null ? 'gameOver' : 'mainMenu';
                 this.restartScene(sceneName, this.gameOver)
             })
             .setScale(0.3)
         ;
 
         const element = this.add.dom(250, 300).createFromCache('topList');
-        this.container = element.getChildByID('toplistContainer');
         this.refreshTopList();
     }
 
@@ -45,9 +43,9 @@ class Ranking extends Phaser.Scene {
         xhttp.send("get=true");
 
         const self = this;
-        xhttp.onreadystatechange = function() {//Call a function when the state changes.
+        xhttp.onreadystatechange = function() {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
-                self.container.innerHTML = this.responseText;
+                document.getElementById('toplistContainer').innerHTML = this.responseText;
             }
         }
     }

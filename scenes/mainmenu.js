@@ -4,12 +4,11 @@ class MainMenu extends Phaser.Scene {
         if (sessionStorage.getItem('firsTimePlayer') === null) {
             sessionStorage.setItem('firsTimePlayer', '1');
         }
-        this.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
     }
 
     create() {
         const self = this;
-
+        self.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
         this.game.sound.stopAll();
 
         this.add.image(250 , 400, 'grass');
@@ -20,6 +19,8 @@ class MainMenu extends Phaser.Scene {
         this.add.text(25, 200, 'Védd meg a miskolci \n villamost az autósoktól!',
             { fontFamily: 'CustomFont', fontSize: '45px', align:'center'})
             .setShadow(1,1,'#000000',2);
+
+        sessionStorage.setItem('gameOver', '{}');
 
         const startButton = this.add.sprite(250  , 400, 'start')
         .setInteractive( { useHandCursor: true  })
