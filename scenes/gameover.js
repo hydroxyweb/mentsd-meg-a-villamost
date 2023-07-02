@@ -12,6 +12,7 @@ class GameOver extends Phaser.Scene {
         this.playerName = localStorage.getItem('mvGame_PlayerName') ?? 'Anonym';
         this.isSaveInProgress = false;
         this.playerNameInput = null;
+        localStorage.setItem('gameOver', JSON.stringify(data));
     }
 
     create() {

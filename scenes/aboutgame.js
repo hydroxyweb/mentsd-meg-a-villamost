@@ -1,6 +1,7 @@
 class AboutGame extends Phaser.Scene {
     constructor() {
         super('aboutGame');
+        this.isFirstTimePlayer = Number(localStorage.getItem('firsTimePlayer'));
     }
 
     create() {
@@ -10,10 +11,18 @@ class AboutGame extends Phaser.Scene {
         background.displayWidth = 500;
         background.displayHeight = 800;
 
-        this.add.sprite(250 , 730, 'back')
+        const spriteName = this.isFirstTimePlayer ? 'start' : 'back';
+
+        this.add.sprite(250 , 730, spriteName)
             .setInteractive({ useHandCursor: true  })
             .on('pointerdown', function() {
-                self.goToMainMenu()
+                if (self.isFirstTimePlayer) {
+                    self.playGame();
+                    localStorage.setItem('firsTimePlayer', '0');
+                } else {
+                    self.goToMainMenu()
+                }
+
             }, this)
             .setScale(0.3)
         ;
@@ -24,6 +33,14 @@ class AboutGame extends Phaser.Scene {
         this.playSfx('click_sfx');
         setTimeout(function() {
             self.scene.start('mainMenu')
+        }, 100);
+    }
+
+    playGame() {
+        const self = this;
+        this.playSfx('click_sfx');
+        setTimeout(function() {
+            self.scene.start('playGame')
         }, 100);
     }
 

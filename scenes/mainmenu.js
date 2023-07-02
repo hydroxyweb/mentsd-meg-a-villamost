@@ -1,6 +1,10 @@
 class MainMenu extends Phaser.Scene {
     constructor() {
         super('mainMenu');
+        if (localStorage.getItem('firsTimePlayer') === null) {
+            localStorage.setItem('firsTimePlayer', '1');
+        }
+        this.isFirstTimePlayer = Number(localStorage.getItem('firsTimePlayer'));
     }
 
     create() {
@@ -40,7 +44,8 @@ class MainMenu extends Phaser.Scene {
 
     startGame() {
         this.playSfx('click_sfx');
-        this.scene.start('playGame');
+        const sceneName = this.isFirstTimePlayer ? 'aboutGame' : 'playGame';
+        this.scene.start(sceneName);
     }
 
     aboutGame() {

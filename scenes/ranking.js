@@ -2,6 +2,7 @@ class Ranking extends Phaser.Scene {
     constructor() {
         super('ranking');
         this.container = '';
+        this.gameOver = localStorage.getItem('gameOver');
     }
 
     preload() {
@@ -15,7 +16,10 @@ class Ranking extends Phaser.Scene {
 
         this.add.sprite(480 , 40, 'end')
             .setInteractive({ useHandCursor: true  })
-            .on('pointerdown', () => this.restartScene('mainMenu'))
+            .on('pointerdown', () => {
+                const sceneName = this.gameOver !== '{}' ? 'gameOver' : 'mainMenu'
+                this.restartScene(sceneName, this.gameOver)
+            })
             .setScale(0.3)
         ;
 
