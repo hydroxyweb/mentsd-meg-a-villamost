@@ -85,8 +85,10 @@ class PlayGame extends Phaser.Scene {
         let calculatedVelocity = this.velocity + (this.level * 30);
         enemies.setVelocityY(calculatedVelocity);
 
-        let minSpawnTime = this.level < 6 ? 3000 - (this.level * 500) : 800;
-        let maxSpawnTime = this.level < 6 ? 3500 - (this.level * 500) : 900;
+        let minSpawnTime = this.level < 7 ? 2900 - (this.level * 300) : 1100;
+        let maxSpawnTime = this.level < 7 ? 3100 - (this.level * 300) : 1300;
+
+        console.log(minSpawnTime, maxSpawnTime, this.level);
 
         const self = this;
         this.enemyTimer = setTimeout(function() {
