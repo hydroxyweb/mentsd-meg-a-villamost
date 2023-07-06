@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Máj 29. 17:48
+-- Létrehozás ideje: 2023. Júl 06. 17:41
 -- Kiszolgáló verziója: 5.7.17
 -- PHP verzió: 7.4.9
 
@@ -28,36 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `highscore` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `name` varchar(20) COLLATE utf8_hungarian_ci NOT NULL,
   `score` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `inserted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `inserted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `mode` varchar(1) COLLATE utf8_hungarian_ci NOT NULL DEFAULT 'N'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `highscore`
---
-
-INSERT INTO `highscore` (`name`, `score`, `inserted`) VALUES
-('---', 0, '2023-05-29 10:25:23'),
-('---', 0, '2023-05-29 10:25:28'),
-('---', 0, '2023-05-29 10:25:33'),
-('---', 0, '2023-05-29 10:25:36'),
-('---', 0, '2023-05-29 10:25:40'),
-('---', 0, '2023-05-29 10:25:42'),
-('---', 0, '2023-05-29 10:25:43'),
-('---', 0, '2023-05-29 10:25:44'),
-('---', 0, '2023-05-29 10:25:45'),
-('---', 0, '2023-05-29 10:25:52'),
-('---', 0, '2023-05-29 10:25:55'),
-('---', 0, '2023-05-29 10:26:03'),
-('---', 0, '2023-05-29 10:26:43'),
-('---', 0, '2023-05-29 10:26:46'),
-('---', 0, '2023-05-29 12:46:34'),
-('---', 0, '2023-05-29 14:17:39'),
-('---', 0, '2023-05-29 15:31:33'),
-('---', 0, '2023-05-29 15:41:54'),
-('---', 0, '2023-05-29 15:44:35'),
-('---', 0, '2023-05-29 15:44:35');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -67,9 +43,20 @@ INSERT INTO `highscore` (`name`, `score`, `inserted`) VALUES
 -- A tábla indexei `highscore`
 --
 ALTER TABLE `highscore`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `name` (`name`),
   ADD KEY `score` (`score`),
   ADD KEY `inserted` (`inserted`);
+
+--
+-- A kiírt táblák AUTO_INCREMENT értéke
+--
+
+--
+-- AUTO_INCREMENT a táblához `highscore`
+--
+ALTER TABLE `highscore`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

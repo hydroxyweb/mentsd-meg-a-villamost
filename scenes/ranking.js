@@ -5,7 +5,7 @@ class Ranking extends Phaser.Scene {
 
     preload() {
         this.load.html('topList', 'assets/form/toplist.php');
-        this.gameOver = sessionStorage.getItem('gameOver');
+        this.gameOver = sessionStorage.getItem('mvGame_gameOver');
     }
 
     create() {
@@ -17,7 +17,7 @@ class Ranking extends Phaser.Scene {
             .setInteractive({ useHandCursor: true  })
             .on('pointerdown', () => {
                 const sceneName = this.gameOver !== '{}' && this.gameOver !== null ? 'gameOver' : 'mainMenu';
-                this.restartScene(sceneName, this.gameOver)
+                this.restartScene(sceneName)
             })
             .setScale(0.3)
         ;
@@ -42,7 +42,6 @@ class Ranking extends Phaser.Scene {
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send("get=true");
 
-        const self = this;
         xhttp.onreadystatechange = function() {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
                 document.getElementById('toplistContainer').innerHTML = this.responseText;

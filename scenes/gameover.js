@@ -12,7 +12,8 @@ class GameOver extends Phaser.Scene {
         this.playerName = localStorage.getItem('mvGame_PlayerName') ?? 'Anonym';
         this.isSaveInProgress = false;
         this.playerNameInput = null;
-        sessionStorage.setItem('gameOver', JSON.stringify(data));
+        sessionStorage.setItem('mvGame_gameOver', JSON.stringify(data));
+        this.gameMode = sessionStorage.getItem('mvGame_gameMode');
     }
 
     create() {
@@ -118,14 +119,14 @@ class GameOver extends Phaser.Scene {
         const xhttp = new XMLHttpRequest();
         xhttp.open("POST", "save_score.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("name="+ this.playerNameInput.value +"&score=" + this.finalScore+"&save=true");
+        xhttp.send("name="+ this.playerNameInput.value +"&score=" + this.finalScore+"&save=true&mode="+ this.gameMode);
 
         const self = this;
         xhttp.onreadystatechange = function() {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
                 self.isSaveInProgress = false;
                 self.scene.start('ranking');
-                sessionStorage.setItem('gameOver', '{}');
+                sessionStorage.setItem('mvGame_gameOver', '{}');
             }
         }
     }

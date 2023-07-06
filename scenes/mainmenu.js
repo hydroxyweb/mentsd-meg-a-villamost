@@ -1,14 +1,14 @@
 class MainMenu extends Phaser.Scene {
     constructor() {
         super('mainMenu');
-        if (sessionStorage.getItem('firsTimePlayer') === null) {
-            sessionStorage.setItem('firsTimePlayer', '1');
+        if (sessionStorage.getItem('mvGame_firsTimePlayer') === null) {
+            sessionStorage.setItem('mvGame_firsTimePlayer', '1');
         }
     }
 
     create() {
         const self = this;
-        self.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
+        self.isFirstTimePlayer = Number(sessionStorage.getItem('mvGame_firsTimePlayer'));
         this.game.sound.stopAll();
 
         this.add.image(250 , 400, 'grass');
@@ -20,12 +20,12 @@ class MainMenu extends Phaser.Scene {
             { fontFamily: 'CustomFont', fontSize: '45px', align:'center'})
             .setShadow(1,1,'#000000',2);
 
-        sessionStorage.setItem('gameOver', '{}');
+        sessionStorage.setItem('mvGame_gameOver', '{}');
 
         const startButton = this.add.sprite(250  , 400, 'start')
         .setInteractive( { useHandCursor: true  })
         .on('pointerdown', function() {
-            self.startGame()
+            this.scene.start('modeSelector');
         },this);
         startButton.displayWidth = 200;
         startButton.displayHeight = 55;
@@ -41,12 +41,6 @@ class MainMenu extends Phaser.Scene {
             .on('pointerdown', function(event) {
                 self.showRanking()
             }, this);
-    }
-
-    startGame() {
-        this.playSfx('click_sfx');
-        const sceneName = this.isFirstTimePlayer ? 'aboutGame' : 'playGame';
-        this.scene.start(sceneName);
     }
 
     aboutGame() {

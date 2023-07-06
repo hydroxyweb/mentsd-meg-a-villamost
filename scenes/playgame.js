@@ -13,10 +13,16 @@ class PlayGame extends Phaser.Scene {
         this.repairPackGroup = null;
         this.enemyGroup = null;
         this.text  = null;
-        this.timedEvent = null;
         this.enemyTimer = null;
         this.repairTimer = null;
         this.gameStatus = null;
+        this.timedEvent = null;
+
+        if (sessionStorage.getItem('mvGame_gameMode') === null) {
+            sessionStorage.setItem('mvGame_gameMode', 'normal');
+        }
+
+        this.gameMode = sessionStorage.getItem('mvGame_gameMode');
     }
 
     handleClickOnEnemy(enemy, extraScore) {
@@ -82,13 +88,27 @@ class PlayGame extends Phaser.Scene {
             .on('pointerdown', this.handleClickOnEnemy.bind(this, enemy, gen_Enemy.extraScore));
             enemies.add(enemy);
         }
-        let calculatedVelocity = this.velocity + (this.level * 30);
-        enemies.setVelocityY(calculatedVelocity);
 
+        let velocityGameModeMultiplier = 30;
         let minSpawnTime = this.level < 7 ? 2900 - (this.level * 300) : 1100;
         let maxSpawnTime = this.level < 7 ? 3100 - (this.level * 300) : 1300;
 
-        console.log(minSpawnTime, maxSpawnTime, this.level);
+        switch (this.gameMode) {
+            case 'easy':
+                minSpawnTime = this.level < 7 ? 3000 - (this.level * 200) : 2000;
+                maxSpawnTime = this.level < 7 ? 3500 - (this.level * 200) : 2500;
+                velocityGameModeMultiplier = 15;
+                break;
+
+            case 'hard':
+                minSpawnTime = this.level < 7 ? 2300 - (this.level * 300) : 700;
+                maxSpawnTime = this.level < 7 ? 2500 - (this.level * 300) : 900;
+                velocityGameModeMultiplier = 40;
+                break;
+        }
+
+        let calculatedVelocity = this.velocity + (this.level * velocityGameModeMultiplier);
+        enemies.setVelocityY(calculatedVelocity);
 
         const self = this;
         this.enemyTimer = setTimeout(function() {

@@ -26,10 +26,18 @@
     <tr>
         <th class="cell">Helyezés</th>
         <th class="cell">Játékos neve</th>
+        <th class="cell">Nehézség</th>
         <th class="cell">Pontszám</th>
     </tr>
 
 <?php
+
+$gameModes = [
+    'E' => 'Könnyű',
+    'N' => 'Normál',
+    'H' => 'Nehéz',
+];
+
 $DB = include ('../../config.php');
 $mysqli = new mysqli('127.0.0.1',$DB['db_username'],$DB['db_password'],$DB['db_name']);
 
@@ -38,11 +46,11 @@ if ($mysqli -> connect_errno) {
 echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
 exit();
 }
-$sql = 'SELECT name,score FROM highscore ORDER BY score DESC,inserted DESC LIMIT 10';
+$sql = 'SELECT name,score,mode FROM highscore ORDER BY score DESC,inserted DESC LIMIT 10';
 $result = $mysqli->query($sql);
 $position = 1;
 while($row = $result->fetch_assoc()) {
-    echo '<tr><td class="cell">'.$position.'.</td><td class="cell">'.$row['name'].'</td><td class="cell">'.$row['score'].'</td></tr>';
+    echo '<tr><td class="cell">'.$position.'.</td><td class="cell">'.$row['name'].'</td><td class="cell">'.$gameModes[$row['mode']].'</td><td class="cell">'.$row['score'].'</td></tr>';
     $position++;
 }
 

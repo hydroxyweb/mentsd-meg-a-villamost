@@ -5,7 +5,7 @@ class AboutGame extends Phaser.Scene {
 
     create() {
         const self = this;
-        self.isFirstTimePlayer = Number(sessionStorage.getItem('firsTimePlayer'));
+        self.isFirstTimePlayer = Number(sessionStorage.getItem('mvGame_firsTimePlayer'));
 
         this.add.image(250 , 400, 'grass');
         const background = this.add.image(250 , 400, 'about_background');
@@ -19,7 +19,7 @@ class AboutGame extends Phaser.Scene {
             .on('pointerdown', function() {
                 if (self.isFirstTimePlayer) {
                     self.playGame();
-                    sessionStorage.setItem('firsTimePlayer', '0');
+                    sessionStorage.setItem('mvGame_firsTimePlayer', '0');
                 } else {
                     self.goToMainMenu()
                 }
