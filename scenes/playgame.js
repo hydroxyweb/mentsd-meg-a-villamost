@@ -17,6 +17,8 @@ class PlayGame extends Phaser.Scene {
         this.repairTimer = null;
         this.gameStatus = null;
         this.timedEvent = null;
+        this.combo = 1;
+        this.comboLimit = 3;
 
         if (sessionStorage.getItem('mvGame_gameMode') === null) {
             sessionStorage.setItem('mvGame_gameMode', 'normal');
@@ -26,11 +28,17 @@ class PlayGame extends Phaser.Scene {
     }
 
     handleClickOnEnemy(enemy, extraScore) {
-        const targetObj = this.add.text(this.input.activePointer.x,this.input.activePointer.y,'+' + extraScore, { fontFamily: 'CustomFont', fontSize: '18px' });
+        let scoreCombo = 1;
+        if (this.combo > this.comboLimit) {
+            scoreCombo = this.combo;
+        }
+        this.combo++;
+        const bonusAmplifier = this.calculateBonus(this.input.activePointer.y);
+        const totalScore = Math.floor(extraScore*bonusAmplifier*scoreCombo);
+        const targetObj = this.add.text(this.input.activePointer.x,this.input.activePointer.y,'+' + totalScore, { fontFamily: 'CustomFont', fontSize: '18px' });
         targetObj.setShadow(1,1,'#000000',2);
-
         enemy.destroy();
-        this.playerScore+=extraScore;
+        this.playerScore+=totalScore;
         this.scoreText.setText('Pontjaid: ' + this.playerScore);
         this.carCount++;
         if (this.carCount%20 === 0) {
@@ -55,6 +63,10 @@ class PlayGame extends Phaser.Scene {
         this.setValue(this.healthBar, this.playerHP);
         repair.destroy();
         this.playSfx('pickup_sfx');
+    }
+
+    handleClickOnRoad() {
+        this.combo = 1;
     }
 
     spawnEnemies(enemies) {
@@ -147,6 +159,7 @@ class PlayGame extends Phaser.Scene {
     detectHit(player, enemy) {
         enemy.destroy();
         this.playerHP-=10;
+        this.combo = 1;
          this.setValue(this.healthBar, this.playerHP);
          if (this.playerHP <= 0) {
              this.gameOver();
@@ -266,7 +279,9 @@ class PlayGame extends Phaser.Scene {
     create() {
         const self = this;
         this.add.image(250 , 400, 'grass');
-        this.add.image(250 , 400, 'road');
+        const road = this.add.image(250 , 400, 'road');
+        road.setInteractive()
+        .on('pointerdown', this.handleClickOnRoad.bind(this));
 
         const tramPositionX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const tramPositionY = this.cameras.main.worldView.y + this.cameras.main.height - 120;
@@ -292,5 +307,18 @@ class PlayGame extends Phaser.Scene {
         });
 
         this.createBar();
+    }
+
+    calculateBonus(enemyPosY) {
+        //212 525
+        if (enemyPosY <= 212) {
+            return 2;
+        }
+
+        if (enemyPosY >= 400) {
+            return 0.5;
+        }
+
+        return 1;
     }
 }

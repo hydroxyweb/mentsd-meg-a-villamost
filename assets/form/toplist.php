@@ -19,9 +19,21 @@
             border-bottom: 1px dashed #a5671c;
             background: #ffcc99;
         }
+
+        .info {
+            padding-top: 25px;
+            margin: 0;
+            padding-bottom: 5px;
+        }
     </style>
 </head>
 <body>
+    <p class="info" id="topListInfoText">
+        <small>Az aktuális hónap legjobbjai szerepelnek a listában</small>
+    </p>
+    <p class="info" id="hallOfFameInfoText">
+        <small>A legtöbb pontszámot elérő játékosok listája</small>
+    </p>
 <table style="width: 350px;border: 1px solid #a5671c;border-collapse: collapse;border-spacing:0" id="toplistContainer" cellspacing="0" cellpadding="0">
     <tr>
         <th class="cell">Helyezés</th>

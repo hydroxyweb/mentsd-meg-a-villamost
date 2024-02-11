@@ -1,3 +1,6 @@
+/**
+ * Top lista scene
+ */
 class Ranking extends Phaser.Scene {
     constructor() {
         super('ranking');
@@ -8,10 +11,13 @@ class Ranking extends Phaser.Scene {
         this.gameOver = sessionStorage.getItem('mvGame_gameOver');
     }
 
-    create() {
+    create(data) {
+        this.sceneType = typeof data.sceneType !== 'undefined' ? data.sceneType : 'TOPLIST';
         this.add.image(250 , 400, 'grass');
         this.add.image(250, 400, 'toplist_background');
-        this.add.text(150  , 10, 'TOP LISTA', { fontFamily: 'CustomFont', fontSize: '50px', align: 'center' }).setShadow(1,1,'#000000',2);
+        const sceneTitle = this.isTopListScene() ? 'TOP LISTA' : 'Örökranglista';
+        const titlePosX = this.isTopListScene() ? 150 : 120;
+        this.add.text(titlePosX  , 10, sceneTitle, { fontFamily: 'CustomFont', fontSize: '50px', align: 'center' }).setShadow(1,1,'#000000',2);
 
         this.add.sprite(480 , 40, 'end')
             .setInteractive({ useHandCursor: true  })
@@ -22,13 +28,24 @@ class Ranking extends Phaser.Scene {
             .setScale(0.3)
         ;
 
-        const element = this.add.dom(250, 300).createFromCache('topList');
+        const element = this.add.dom(250, 317).createFromCache('topList');
         this.refreshTopList();
+
+        if (this.isTopListScene()) {
+            this.add.sprite(250, 600, 'hall_of_fame_button')
+            .setInteractive( { useHandCursor: true  })
+            .on('pointerdown', function() {
+                this.scene.restart({sceneType: 'HALLOFFAME'});
+            },this)
+            .setScale(0.3);
+        }
+        
     }
 
     restartScene(sceneName) {
         this.playSfx('click_sfx');
         setTimeout(() => {
+            this.scene.restart({sceneType: 'TOPLIST'});
             const theOtherScene = this.scene.get(sceneName);
             theOtherScene.scene.restart();
             this.scene.start(sceneName);
@@ -37,14 +54,27 @@ class Ranking extends Phaser.Scene {
     }
 
     refreshTopList() {
+        const topListContainer = document.getElementById('toplistContainer');
+        const topListInfoText = document.getElementById('topListInfoText');
+        const hallOfFameInfoText = document.getElementById('hallOfFameInfoText');
+        if (topListContainer === null || topListInfoText === null) {
+            return;
+        }
         const xhttp = new XMLHttpRequest();
         xhttp.open("POST", "save_score.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("get=true");
+        let sendParameter = 'get=true';
+        if (this.isHallOfFameScene()) {
+            sendParameter+='&halloffame=true';
+        }
+        xhttp.send(sendParameter);
 
+        const self = this;
         xhttp.onreadystatechange = function() {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
-                document.getElementById('toplistContainer').innerHTML = this.responseText;
+                topListContainer.innerHTML = this.responseText;
+                topListInfoText.style.display = self.isHallOfFameScene() ? 'none' : 'block';
+                hallOfFameInfoText.style.display = self.isTopListScene() ? 'none' : 'block';
             }
         }
     }
@@ -52,5 +82,13 @@ class Ranking extends Phaser.Scene {
     playSfx(sfxName, userVolume = 0.2) {
         const sfx = this.sound.add(sfxName, {volume : userVolume});
         sfx.play();
+    }
+
+    isTopListScene() {
+        return this.sceneType === 'TOPLIST';
+    }
+
+    isHallOfFameScene() {
+        return this.sceneType === 'HALLOFFAME';
     }
 }

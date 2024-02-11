@@ -12,7 +12,7 @@ class ModeSelector extends Phaser.Scene {
         this.game.sound.stopAll();
 
         this.add.image(250, 400, 'grass');
-        this.add.image(250, 400, 'mainMenuBg');
+        this.add.image(250, 400, 'main_menu_bg');
 
         this.add.image(250, 150, 'tram').setScale(0.5);
 
