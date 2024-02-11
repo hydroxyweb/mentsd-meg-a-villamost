@@ -21,7 +21,7 @@ if (isset($_POST['save'])) {
     $score = (int) strip_tags($_POST['score']);
     $mode = strtoupper(substr($_POST['mode'], 0, 1));
 
-    if (empty($name) || $score > 500000 || !in_array($mode, ['E', 'N', 'H'])) {
+    if (empty($name) || $score > 5000000 || !in_array($mode, ['E', 'N', 'H'])) {
         return;
     }
 
